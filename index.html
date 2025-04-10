@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What You Forgot to Remember</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes slowFloat {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-8px) translateX(5px);
+            }
+
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        @keyframes fogMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            }
+
+            50% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+            }
+
+            100% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(125deg, #f0f0f3, #e4e4e7, #dcdde1, #f0f0f3);
+            /* Softer light mode colors */
+            color: #333;
+            /* Darker text for better contrast */
+            transition: all 1.5s ease;
+        }
+
+        /* Portal effect */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vmax;
+            height: 100vmax;
+            background: radial-gradient(circle, rgba(137, 207, 240, 0.03) 0%, rgba(28, 32, 86, 0.02) 30%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.8;
+            z-index: -1;
+            animation: pulseGlow 10s infinite alternate;
+        }
+
+        /* Dust/noise overlay */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.05 0' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            z-index: -1;
+            mix-blend-mode: overlay;
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: fadeInOut 3s infinite;
+        }
+
+        .fog-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 70%, rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.6;
+            mix-blend-mode: screen;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            animation: slowFloat 6s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin-bottom: 60px;
+            opacity: 0.8;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            animation: slowFloat 7s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+
+        .reveal-btn {
+            padding: 32px 74px;
+            font-size: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: inherit;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            font-family: inherit;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: slowFloat 8s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        .reveal-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s;
+        }
+
+        .reveal-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .reveal-btn:hover::before {
+            left: 100%;
+        }
+
+        .or-maybe {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            font-style: italic;
+            animation: slowFloat 9s ease-in-out infinite;
+            animation-delay: 1.5s;
+        }
+
+        .memory-result {
+            margin: 60px 0;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            max-width: 600px;
+            opacity: 0;
+            transition: all 3s cubic-bezier(0.19, 1, 0.22, 1);
+            font-weight: 300;
+            font-style: italic;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: pulseGlow 5s ease-in-out infinite;
+            animation-play-state: paused;
+            min-height: 3.6rem;
+        }
+
+        .fade-in {
+            opacity: 1;
+            animation-play-state: running;
+        }
+
+        .action-btns {
+        position: absolute; /* Remove from normal flow */
+        top: 100%; /* Place it below the container */
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 20px; /* Add spacing from the memory result */
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        visibility: hidden; /* Initially hidden */
+        opacity: 0; /* Fully transparent */
+        transition: opacity 2s ease, visibility 0s 2s; /* Smooth fade-in */
+    }
+
+    .action-btns.visible {
+        visibility: visible; /* Make it visible */
+        opacity: 1; /* Fully opaque */
+        transition: opacity 2s ease; /* Smooth fade-in */
+    }
+
+        .action-btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: inherit;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            font-family: inherit;
+            border-radius: 2px;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .control-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.5;
+            transition: all 0.5s;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 2px;
+        }
+
+        .control-btn:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .ambient-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            opacity: 0.5;
+            transition: opacity 0.5s;
+        }
+
+        .ambient-control:hover {
+            opacity: 1;
+        }
+
+        .archive-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .archive-title {
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-align: center;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .archive-list {
+            list-style: none;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .archive-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-style: italic;
+            transition: all 0.3s;
+        }
+
+        .archive-item:hover {
+            transform: translateX(5px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .back-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: inherit;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: 2px;
+            letter-spacing: 1px;
+            transition: all 0.5s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .polaroid {
+            position: absolute;
+            background-color: #fff;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: rotate(var(--rotation));
+            z-index: 1;
+            opacity: 0.1;
+            transition: all 0.5s;
+        }
+
+        .polaroid:hover {
+            opacity: 0.2;
+            transform: scale(1.05) rotate(var(--rotation));
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0.5;
+        }
+
+        #light-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(173, 216, 230, 0.05) 0%, rgba(173, 216, 230, 0) 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 3s ease;
+            z-index: 1;
+        }
+
+        #light-rays.visible {
+            opacity: 1;
+        }
+
+        body:not(.dark-mode) .polaroid {
+            opacity: 0.3;
+            /* Increase visibility in light mode */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            /* Darker shadow for better contrast */
+        }
+
+        body:not(.dark-mode) .polaroid:hover {
+            opacity: 0.5;
+            /* Slightly increase opacity on hover */
+            transform: scale(1.05) rotate(var(--rotation));
+        }
+
+        /* Dark mode is now our default mode, this actually makes it lighter */
+        body.dark-mode {
+            background: linear-gradient(125deg, #2b2f4b, #3b3f6b, #4d5194, #2b2f4b);
+            color: #fff;
+        }
+
+        body.dark-mode::after {
+            opacity: 0.5;
+        }
+
+
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 40px;
+            }
+
+            .memory-result {
+                font-size: 1.5rem;
+                margin: 40px 0;
+            }
+
+            .polaroid {
+                display: none;
+                /* Hide decorative elements on mobile */
+            }
+
+            .controls {
+                bottom: 10px;
+                right: 10px;
+                gap: 10px;
+            }
+
+            .control-btn,
+            .ambient-control {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="fog-overlay"></div>
+    <div id="light-rays"></div>
+
+    <div class="polaroid" style="--rotation: 15deg; top: 10%; right: 15%; width: 120px; height: 100px;">
+        <div class="polaroid-img"></div>
+    </div>
+    <div class="polaroid" style="--rotation: -8deg; bottom: 15%; left: 10%; width: 150px; height: 140px;">
+        <div class="polaroid-img"></div>
+    </div>
+    <div class="polaroid" style="--rotation: 5deg; top: 25%; left: 15%; width: 100px; height: 90px;">
+        <div class="polaroid-img"></div>
+    </div>
+
+    <div class="container" id="main-content">
+        <h1>What You Forgot to Remember</h1>
+        <p class="subtitle">It's there. You just haven't looked yet.</p>
+
+        <button class="reveal-btn" id="reveal-btn">Reveal It</button>
+        <p class="or-maybe">Or maybe don't.</p>
+
+        <div class="memory-result" id="memory-result"></div>
+
+        <div class="action-btns" id="action-btns" style="display: none;">
+            <button class="action-btn" id="try-again-btn">Try Again</button>
+            <button class="action-btn" id="save-image-btn">Save as Image</button>
+        </div>
+    </div>
+
+    <div class="archive-container" id="archive-content">
+        <h2 class="archive-title">Memory Archive</h2>
+        <ul class="archive-list" id="archive-list">
+            <!-- Archive items will be added here dynamically -->
+        </ul>
+        <button class="back-btn" id="back-btn">Return</button>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="dark-mode-btn">Light / Dark</button>
+        <div class="ambient-control">
+            <span id="sound-btn">Sound</span>
+            <span id="sound-indicator">◯</span>
+        </div>
+        <button class="control-btn" id="archive-btn">Archive</button>
+    </div>
+
+    <audio id="ambient-sound" loop>
+        <source src="ethereal.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        // Memory database
+        const memories = [
+            "The letter you never sent.",
+            "That Tuesday. You know the one.",
+            "Why you kept that voicemail.",
+            "The dream that woke you at 3:17 AM.",
+            "When the stranger called you by a different name.",
+            "The face you saw in the crowd that day.",
+            "Why you stopped wearing that color.",
+            "The words you rehearsed but never said.",
+            "The promise you made to yourself at age twelve.",
+            "How the air smelled before it happened.",
+            "The secret you kept even from yourself.",
+            "That song you can't remember the name of.",
+            "The reason you still check that drawer.",
+            "The shadow in the corner of your childhood bedroom.",
+            "What made you hesitate that one time.",
+            "The date that means something only to you.",
+            "Why you still avoid that street.",
+            "The pattern in the wallpaper that only you noticed.",
+            "The moment you realized it was already too late.",
+            "What you were trying to prove.",
+            "The name you almost chose instead.",
+            "What was written on that torn page.",
+            "Why you still keep that key.",
+            "The real reason you left early that night.",
+            "What they whispered when they thought you couldn't hear.",
+            "Why that particular memory makes you smile.",
+            "The message you deleted immediately.",
+            "What was in that recurring dream you had as a child.",
+            "Why you sometimes still look for them in crowds.",
+            "The significance of that number to you.",
+            "What made you change your mind at the last second.",
+            "The reason you stopped wearing that perfume.",
+            "Why you kept that receipt all these years.",
+            "What you saw in the mirror that morning.",
+            "The story behind that unexplained bruise.",
+            "Why you never finished that book.",
+            "What was on the other side of that door.",
+            "The real reason you took that detour.",
+            "Why that old photograph still unsettles you.",
+            "What you were afraid would happen if you stayed.",
+            "The words on the note you found in your pocket.",
+            "Why you still check that one particular email account.",
+            "What they told you when no one else was listening.",
+            "The sound that woke you that night.",
+            "Why you abandoned that childhood ambition.",
+            "The name of the street where it all changed.",
+            "What you buried in the backyard.",
+            "Why that specific cloud formation made you uneasy.",
+            "What was reflected in the window that wasn't there.",
+            "The taste of something you can't quite place.",
+            "Why you haven't opened that box yet.",
+            "What was behind that locked door in your grandparents' house.",
+            "The words to that lullaby no one else knows.",
+            "Why you sometimes wake up with tears in your eyes.",
+            "What you were trying to find that summer.",
+            "The reason you changed your handwriting.",
+            "Why you can't bring yourself to throw away that old sweater.",
+            "What made the hair on your neck stand up that afternoon.",
+            "The message hidden in that birthday card.",
+            "Why you started counting the steps.",
+            "What was written in invisible ink.",
+            "The question you were too afraid to ask.",
+            "Why you never wear watches anymore.",
+            "What was following you home that night.",
+            "The reason behind that unexplained scar.",
+            "Why you stopped believing in coincidences.",
+            "What was on the back of that photograph.",
+            "The real purpose of that childhood ritual.",
+            "Why you can't look at the stars the same way anymore.",
+            "What you found between the pages of that library book.",
+            "The significance of that recurring number in your life.",
+            "Why you avoid mirrors in the dark.",
+            "What you saw in their eyes that made you turn away.",
+            "The reason you changed your route to work.",
+            "Why you stopped wearing that ring.",
+            "What was carved into that tree before they cut it down.",
+            "The promise you made that no one knows about.",
+            "Why you still check under the bed sometimes.",
+            "What you were looking for when you found something else entirely.",
+            "The reason behind that inexplicable feeling of déjà vu.",
+            "Why you prefer to sit with your back to the wall.",
+            "What was hidden behind the wallpaper in your childhood room.",
+            "The truth about that family story no one talks about.",
+            "Why certain songs make you unexpectedly emotional.",
+            "What your reflection whispered to you.",
+            "The reason you don't like being alone in elevators.",
+            "Why you can't remember what happened that entire day.",
+            "What was on that USB drive you lost.",
+            "The real reason you left town so suddenly.",
+            "Why you never returned to that place.",
+            "What you found in the attic when no one else was home.",
+            "The reason you still check that one specific voicemail.",
+            "Why you suddenly stopped having that recurring dream.",
+            "What made you change your mind about them.",
+            "The significance of that seemingly random date.",
+            "Why you still carry that particular photograph.",
+            "What was written in that journal you lost.",
+            "The words you couldn't bring yourself to say at the funeral.",
+            "Why you sometimes still dial their number.",
+            "What made that particular sunset different from all others.",
+            "The real meaning behind that childhood nickname.",
+            "Why certain smells transport you immediately back in time.",
+            "What you found when you finally looked.",
+            "The reason you stopped trusting your intuition."
+        ];
+
+        // Rare memories (0.5% chance)
+        const rareMemories = [
+            "The entity that watches you sleep isn't what you think it is.",
+            "You aren't the first version of yourself to live this life.",
+            "The reason you feel like you don't belong is because you don't.",
+            "Someone knows exactly what you did.",
+            "You've been pronouncing your own name wrong this entire time."
+        ];
+
+        // DOM elements
+        const mainContent = document.getElementById('main-content');
+        const archiveContent = document.getElementById('archive-content');
+        const revealBtn = document.getElementById('reveal-btn');
+        const memoryResult = document.getElementById('memory-result');
+        const actionBtns = document.getElementById('action-btns');
+        const tryAgainBtn = document.getElementById('try-again-btn');
+        const saveImageBtn = document.getElementById('save-image-btn');
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const soundBtn = document.getElementById('sound-btn');
+        const soundIndicator = document.getElementById('sound-indicator');
+        const archiveBtn = document.getElementById('archive-btn');
+        const archiveList = document.getElementById('archive-list');
+        const backBtn = document.getElementById('back-btn');
+        const ambientSound = document.getElementById('ambient-sound');
+
+        // State variables
+        let soundEnabled = false;
+        let viewedMemories = JSON.parse(localStorage.getItem('viewedMemories')) || [];
+        let dailyMemoryCount = 0;
+        const lastUsedDate = localStorage.getItem('lastUsedDate');
+        const currentDate = new Date().toDateString();
+
+        // Check if it's a new day and reset the counter
+        if (lastUsedDate !== currentDate) {
+            localStorage.setItem('lastUsedDate', currentDate);
+            localStorage.setItem('dailyMemoryCount', '0');
+            dailyMemoryCount = 0;
+        } else {
+            dailyMemoryCount = parseInt(localStorage.getItem('dailyMemoryCount') || '0');
+        }
+
+        // Initialize dark mode from localStorage
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Get a random memory
+        function getRandomMemory() {
+            // Check if we've reached the daily limit (2 per day)
+            if (dailyMemoryCount >= 2) {
+                return "You've remembered enough for today. Return tomorrow.";
+            }
+
+            // 0.5% chance for rare memory
+            if (Math.random() < 0.005) {
+                const randomIndex = Math.floor(Math.random() * rareMemories.length);
+                return rareMemories[randomIndex];
+            }
+
+            const randomIndex = Math.floor(Math.random() * memories.length);
+            return memories[randomIndex];
+        }
+
+        // Show memory
+// Show memory
+function showMemory() {
+    revealBtn.style.display = 'none';
+    document.querySelector('.or-maybe').style.display = 'none';
+
+    const memory = getRandomMemory();
+    memoryResult.textContent = memory;
+
+    // Add memory to viewed list if not daily limit message
+    if (!memory.includes("You've remembered enough")) {
+        dailyMemoryCount++;
+        localStorage.setItem('dailyMemoryCount', dailyMemoryCount.toString());
+
+        // Add to archive if not already there
+        if (!viewedMemories.includes(memory)) {
+            viewedMemories.push(memory);
+            localStorage.setItem('viewedMemories', JSON.stringify(viewedMemories));
+        }
+    }
+
+    // Fade in animation
+    setTimeout(() => {
+        memoryResult.classList.add('fade-in');
+    }, 100);
+
+    // Show action buttons
+    setTimeout(() => {
+        actionBtns.classList.add('visible'); // Use the 'visible' class
+    }, 2000);
+}
+
+// Reset to initial state
+function resetMemory() {
+    memoryResult.classList.remove('fade-in');
+    memoryResult.textContent = '';
+    actionBtns.classList.remove('visible'); // Use the 'visible' class
+    revealBtn.style.display = 'block';
+    document.querySelector('.or-maybe').style.display = 'block';
+}
+
+        // Save as image
+        function saveAsImage() {
+            // Create a temporary canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas dimensions
+            canvas.width = 800;
+            canvas.height = 600;
+
+            // Fill background
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            ctx.fillStyle = isDarkMode ? '#1a1a1f' : '#f5f5f7';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw title
+            ctx.font = '30px "Cormorant Garamond", serif';
+            ctx.fillStyle = isDarkMode ? '#e0e0e0' : '#333';
+            ctx.textAlign = 'center';
+            ctx.fillText('What You Forgot to Remember', canvas.width / 2, 100);
+
+            // Draw memory
+            ctx.font = 'italic 24px "Cormorant Garamond", serif';
+
+            // Handle text wrapping
+            const maxWidth = 600;
+            const lineHeight = 36;
+            const words = memoryResult.textContent.split(' ');
+            let line = '';
+            let y = canvas.height / 2;
+
+            for (let i = 0; i < words.length; i++) {
+                const testLine = line + words[i] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+
+                if (testWidth > maxWidth && i > 0) {
+                    ctx.fillText(line, canvas.width / 2, y);
+                    line = words[i] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, canvas.width / 2, y);
+
+            // Convert to image and trigger download
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'forgotten-memory.png';
+            link.href = dataUrl;
+            link.click();
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Toggle sound
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                ambientSound.volume = 0.2;
+                ambientSound.play();
+                soundIndicator.textContent = '●';
+            } else {
+                ambientSound.pause();
+                soundIndicator.textContent = '◯';
+            }
+        }
+
+        // Show archive
+        function showArchive() {
+            mainContent.style.display = 'none';
+            archiveContent.style.display = 'block';
+
+            // Clear archive list
+            archiveList.innerHTML = '';
+
+            // Populate archive list
+            if (viewedMemories.length === 0) {
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'archive-item';
+                emptyItem.textContent = 'You have not remembered anything yet.';
+                archiveList.appendChild(emptyItem);
+            } else {
+                viewedMemories.forEach(memory => {
+                    const item = document.createElement('li');
+                    item.className = 'archive-item';
+                    item.textContent = memory;
+                    archiveList.appendChild(item);
+                });
+            }
+        }
+
+        // Show main content
+        function showMain() {
+            archiveContent.style.display = 'none';
+            mainContent.style.display = 'flex';
+        }
+
+        // Event listeners
+        revealBtn.addEventListener('click', showMemory);
+        tryAgainBtn.addEventListener('click', resetMemory);
+        saveImageBtn.addEventListener('click', saveAsImage);
+        darkModeBtn.addEventListener('click', toggleDarkMode);
+        soundBtn.addEventListener('click', toggleSound);
+        archiveBtn.addEventListener('click', showArchive);
+        backBtn.addEventListener('click', showMain);
+    </script>
+</body>
+
+</html>
