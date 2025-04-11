@@ -1,0 +1,488 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@keyframes slowFloat {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+
+    50% {
+        transform: translateY(-8px) translateX(5px);
+    }
+
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+@keyframes fogMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    100% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+body {
+    font-family: 'Cormorant Garamond', serif;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(125deg, #f0f0f3, #e4e4e7, #dcdde1, #f0f0f3);
+    /* Softer light mode colors */
+    color: #333;
+    /* Darker text for better contrast */
+    transition: all 1.5s ease;
+}
+
+/* Portal effect */
+body::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vmax;
+    height: 100vmax;
+    background: radial-gradient(circle, rgba(137, 207, 240, 0.03) 0%, rgba(28, 32, 86, 0.02) 30%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: -1;
+    animation: pulseGlow 10s infinite alternate;
+}
+
+/* Dust/noise overlay */
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.05 0' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.15;
+    z-index: -1;
+    mix-blend-mode: overlay;
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: fadeInOut 3s infinite;
+}
+
+.fog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 70%, rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 140vh;
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    animation: slowFloat 6s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
+}
+
+.subtitle {
+    font-style: italic;
+    margin-bottom: 60px;
+    opacity: 0.8;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    animation: slowFloat 7s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.reveal-btn {
+    padding: 32px 74px;
+    font-size: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    font-family: inherit;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: slowFloat 8s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+.reveal-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: all 0.5s;
+}
+
+.reveal-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.reveal-btn:hover::before {
+    left: 100%;
+}
+
+.or-maybe {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    font-style: italic;
+    animation: slowFloat 9s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.memory-result {
+    margin: 60px 0;
+    font-size: 1.8rem;
+    line-height: 1.4;
+    max-width: 600px;
+    opacity: 0;
+    transition: all 3s cubic-bezier(0.19, 1, 0.22, 1);
+    font-weight: 300;
+    font-style: italic;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    animation: pulseGlow 5s ease-in-out infinite;
+    animation-play-state: paused;
+    min-height: 3.6rem;
+}
+
+.fade-in {
+    opacity: 1;
+    animation-play-state: running;
+    transition: 6s;
+}
+
+.action-btns {
+position: absolute; /* Remove from normal flow */
+top: 100%; /* Place it below the container */
+left: 50%;
+transform: translateX(-50%);
+margin-top: 20px; /* Add spacing from the memory result */
+display: flex;
+flex-direction: column;
+gap: 15px;
+visibility: hidden; /* Initially hidden */
+opacity: 0; /* Fully transparent */
+transition: opacity 2s ease, visibility 0s 2s; /* Smooth fade-in */
+}
+
+.action-btns.visible {
+visibility: visible; /* Make it visible */
+opacity: 1; /* Fully opaque */
+transition: opacity 2s ease; /* Smooth fade-in */
+}
+
+.action-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    font-family: inherit;
+    border-radius: 2px;
+    letter-spacing: 1px;
+}
+
+.action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 10;
+}
+
+.control-btn {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.5;
+    transition: all 0.5s;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 2px;
+}
+
+.control-btn:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ambient-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    padding: 8px 12px;
+    opacity: 0.5;
+    transition: opacity 0.5s;
+}
+
+.ambient-control:hover {
+    opacity: 1;
+}
+
+.archive-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    display: none;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.archive-title {
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-align: center;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.archive-list {
+    list-style: none;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.archive-item {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-style: italic;
+    transition: all 0.3s;
+}
+
+.archive-item:hover {
+    transform: translateX(5px);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.back-btn {
+    display: block;
+    margin: 30px auto;
+    padding: 12px 30px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    transition: all 0.5s;
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.polaroid {
+    position: absolute;
+    background-color: #fff;
+    padding: 10px 10px 30px 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: rotate(var(--rotation));
+    z-index: 1;
+    opacity: 0.1;
+    transition: all 0.5s;
+}
+
+.polaroid:hover {
+    opacity: 0.2;
+    transform: scale(1.05) rotate(var(--rotation));
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+#light-rays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(173, 216, 230, 0.05) 0%, rgba(173, 216, 230, 0) 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 3s ease;
+    z-index: 1;
+}
+
+#light-rays.visible {
+    opacity: 1;
+}
+
+.kofi-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.kofi-button:hover {
+    opacity: 1;
+}
+
+
+body:not(.dark-mode) .polaroid {
+    opacity: 0.3;
+    /* Increase visibility in light mode */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    /* Darker shadow for better contrast */
+}
+
+body:not(.dark-mode) .polaroid:hover {
+    opacity: 0.5;
+    /* Slightly increase opacity on hover */
+    transform: scale(1.05) rotate(var(--rotation));
+}
+
+/* Dark mode is now our default mode, this actually makes it lighter */
+body.dark-mode {
+    background: linear-gradient(125deg, #2b2f4b, #3b3f6b, #4d5194, #2b2f4b);
+    color: #fff;
+}
+
+body.dark-mode::after {
+    opacity: 0.5;
+}
+
+
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+
+    .memory-result {
+        font-size: 1.5rem;
+        margin: 40px 0;
+    }
+
+    .polaroid {
+        display: none;
+        /* Hide decorative elements on mobile */
+    }
+
+    .controls {
+        bottom: 10px;
+        right: 10px;
+        gap: 10px;
+    }
+
+    .control-btn,
+    .ambient-control {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+}
