@@ -18,8 +18,7 @@
             "The pattern in the wallpaper that only you noticed.",
             "The moment you realized it was already too late.",
             "What you were trying to prove.",
-            "The name you almost chose instead.",
-            "What was written on that torn page.",
+            "The person you almost chose instead.",
             "Why you still keep that key.",
             "The real reason you left early that night.",
             "What they whispered when they thought you couldn't hear.",
@@ -32,7 +31,6 @@
             "The reason you stopped wearing that perfume.",
             "The reason you kept holding on when no one else did.",
             "What you saw in the mirror that morning.",
-            "The story behind that unexplained bruise.",
             "What you erased before anyone could see it.",
             "Why you keep returning to the same place, hoping it’s changed.",
             "What you refused to see the first time.",
@@ -42,26 +40,19 @@
             "The real reason you took that detour.",
             "Why that old photo still unsettles you.",
             "What you were afraid would happen if you stayed.",
-            "The words on the note you found in your pocket.",
-            "Why you still check that one particular email account.",
             "What they told you when no one else was listening.",
             "The sound that woke you that night.",
             "Why you abandoned that childhood ambition.",
             "The name of the street where it all changed.",
-            "Why that specific cloud formation made you uneasy.",
             "What was reflected in the window that wasn't there.",
             "The taste of something you can't quite place.",
             "Why you haven't opened that box yet.",
-            "The words to that lullaby no one else knows.",
             "Why you sometimes wake up with tears in your eyes.",
             "What you were trying to find that summer.",
             "Why you can't bring yourself to throw away that old thing.",
-            "What made the hair on your neck stand up that afternoon.",
-            "The message hidden in that birthday card.",
-            "Why you started counting the steps.",
+            "The words they wrote but never meant for you to read.",
             "The question you were too afraid to ask.",
             "What was following you home that night.",
-            "The reason behind that unexplained scar.",
             "Why you stopped believing in coincidences.",
             "The real purpose of that childhood ritual.",
             "Why you can't look at the stars the same way anymore.",
@@ -70,8 +61,7 @@
             "Why you avoid mirrors in the dark.",
             "What you saw in their eyes that made you turn away.",
             "The reason you changed your route to work.",
-            "Why you stopped wearing that ring.",
-            "What was carved into that tree before they cut it down.",
+            "Why you stopped wearing it.",
             "The promise you made that no one knows about.",
             "Why you still check under the bed sometimes.",
             "What you were looking for when you found something else entirely.",
@@ -79,7 +69,7 @@
             "Why you prefer to sit with your back to the wall.",
             "What was hidden behind the wallpaper in your childhood room.",
             "The truth about that family story no one talks about.",
-            "Why that song make you unexpectedly emotional.",
+            "Why that song makes you unexpectedly emotional.",
             "What you found when you weren't looking",
             "The reason you don't like being alone in elevators.",
             "Why you can't remember what happened that entire day.",
@@ -90,12 +80,11 @@
             "What made you change your mind about them.",
             "The significance of that seemingly random date.",
             "Why you still have that particular photo.",
-            "What was written in that journal you lost.",
             "The words you couldn't bring yourself to say at the funeral.",
             "Why you sometimes still dial their number.",
             "What made that particular sunset different from all others.",
             "The real meaning behind that childhood nickname.",
-            "Why certain smells transport you immediately back in time.",
+            "Why that smell immediately transports you back in time.",
             "What you found when you finally looked.",
             "The reason you stopped trusting your intuition.",
             "The time you pretended not to notice.",
@@ -121,7 +110,7 @@
             "Why the room felt different that day.",
             "What slipped between the cracks of that conversation.",
             "What made you start counting, and why you never stopped.",
-            "What you read that changed everything.",
+            "What you read that changed everything."
 
         ];
 
@@ -175,7 +164,7 @@
         // Get a random memory
         function getRandomMemory() {
             // Check if we've reached the daily limit (2 per day)
-            if (dailyMemoryCount >= 2) {
+            if (dailyMemoryCount >= 500) {
                 return "You've remembered enough for today. Return tomorrow.";
             }
 
@@ -243,41 +232,52 @@ function resetMemory() {
 
         // Save as image
         function saveAsImage() {
-            // Create a temporary canvas
+            const memoryText = document.getElementById('memory-result').textContent.trim();
+            if (!memoryText) return;
+        
+            const isDarkMode = document.body.classList.contains('dark-mode');
+        
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-
-            // Set canvas dimensions
-            canvas.width = 700;
-            canvas.height = 350;
-
-            // Fill background
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            ctx.fillStyle = isDarkMode ? '#1a1a1f' : '#f5f5f7';
+        
+            canvas.width = 800;
+            canvas.height = 500;
+        
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#2b2f4b');
+            gradient.addColorStop(0.33, '#3b3f6b');
+            gradient.addColorStop(0.66, '#4d5194');
+            gradient.addColorStop(1, '#2b2f4b');
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw title
-            ctx.font = '30px "Cormorant Garamond", serif';
-            ctx.fillStyle = isDarkMode ? '#e0e0e0' : '#333';
+        
+            // Title
+            ctx.font = 'bold 48px "Cormorant Garamond", serif';
+            ctx.fillStyle = isDarkMode ? '#e0e0e0' : '#e0e0e0';
             ctx.textAlign = 'center';
-            ctx.fillText('What You Forgot to Remember', canvas.width / 2, 100);
-
-            // Draw memory
+            ctx.textBaseline = 'top';
+            ctx.fillText('What You Forgot to Remember', canvas.width / 2, 50);
+        
+            // Subtitle
             ctx.font = 'italic 24px "Cormorant Garamond", serif';
-
-            // Handle text wrapping
-            const maxWidth = 600;
-            const lineHeight = 36;
-            const words = memoryResult.textContent.split(' ');
+            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.4)';
+            ctx.fillText("It's there. You just haven't looked yet.", canvas.width / 2, 110);
+        
+            // Memory text
+            ctx.font = 'italic 32px "Cormorant Garamond", serif';
+            ctx.fillStyle = isDarkMode ? '#cfcfcf' : '#cfcfcf';
+        
+            const words = memoryText.split(' ');
+            const maxWidth = 700;
+            const lineHeight = 48;
             let line = '';
-            let y = canvas.height / 2;
-
+            let y = canvas.height * 0.55;
+        
             for (let i = 0; i < words.length; i++) {
                 const testLine = line + words[i] + ' ';
                 const metrics = ctx.measureText(testLine);
-                const testWidth = metrics.width;
-
-                if (testWidth > maxWidth && i > 0) {
+                if (metrics.width > maxWidth && i > 0) {
                     ctx.fillText(line, canvas.width / 2, y);
                     line = words[i] + ' ';
                     y += lineHeight;
@@ -286,14 +286,20 @@ function resetMemory() {
                 }
             }
             ctx.fillText(line, canvas.width / 2, y);
-
-            // Convert to image and trigger download
-            const dataUrl = canvas.toDataURL('image/png');
+        
+            // Footer/credit text
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.4)';
+            ctx.textAlign = 'right';
+            ctx.fillText('remembered at lucasgerbasi.github.io/what-you-forgot-to-remember', canvas.width - 20, canvas.height - 20);
+        
+            // Download
             const link = document.createElement('a');
             link.download = 'forgotten-memory.png';
-            link.href = dataUrl;
+            link.href = canvas.toDataURL('image/png');
             link.click();
         }
+        
 
         // Toggle dark mode
         function toggleDarkMode() {
