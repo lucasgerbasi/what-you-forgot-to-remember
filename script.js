@@ -2,8 +2,7 @@
         const memories = [
             "That Tuesday. You know the one.",
             "The dream that woke you at 3:17 AM.",
-            "When the stranger called you by a different name.",
-            "The face you saw in the crowd that day.",
+            "The face you saw that day.",
             "Why you stopped wearing that color.",
             "The words you rehearsed but never said.",
             "The promise you made to yourself at age twelve.",
@@ -11,24 +10,21 @@
             "The secret you kept even from yourself.",
             "That song you can't remember the name of.",
             "The reason you still check that place.",
-            "The shadow in the corner of your childhood bedroom.",
             "What made you hesitate that one time.",
             "The date that means something only to you.",
-            "Why you still avoid that street.",
+            "Why you still avoid that place.",
             "The pattern in the wallpaper that only you noticed.",
             "The moment you realized it was already too late.",
             "What you were trying to prove.",
             "The person you almost chose instead.",
-            "Why you still keep that key.",
             "The real reason you left early that night.",
             "What they whispered when they thought you couldn't hear.",
             "Why that particular memory makes you smile.",
             "The message you deleted immediately.",
             "What was in that recurring dream you had as a child.",
             "Why you sometimes still look for them in crowds.",
-            "The significance of that number to you.",
+            "The significance of that person to you.",
             "What made you change your mind at the last second.",
-            "The reason you stopped wearing that perfume.",
             "The reason you kept holding on when no one else did.",
             "What you saw in the mirror that morning.",
             "What you erased before anyone could see it.",
@@ -43,10 +39,8 @@
             "What they told you when no one else was listening.",
             "The sound that woke you that night.",
             "Why you abandoned that childhood ambition.",
-            "The name of the street where it all changed.",
             "What was reflected in the window that wasn't there.",
             "The taste of something you can't quite place.",
-            "Why you haven't opened that box yet.",
             "Why you sometimes wake up with tears in your eyes.",
             "What you were trying to find that summer.",
             "Why you can't bring yourself to throw away that old thing.",
@@ -55,7 +49,6 @@
             "What was following you home that night.",
             "Why you stopped believing in coincidences.",
             "The real purpose of that childhood ritual.",
-            "Why you can't look at the stars the same way anymore.",
             "What you found when you weren't looking.",
             "The significance of that recurring number in your life.",
             "Why you avoid mirrors in the dark.",
@@ -63,7 +56,6 @@
             "The reason you changed your route to work.",
             "Why you stopped wearing it.",
             "The promise you made that no one knows about.",
-            "Why you still check under the bed sometimes.",
             "What you were looking for when you found something else entirely.",
             "The reason behind that inexplicable feeling of déjà vu.",
             "Why you prefer to sit with your back to the wall.",
@@ -71,7 +63,6 @@
             "The truth about that family story no one talks about.",
             "Why that song makes you unexpectedly emotional.",
             "What you found when you weren't looking",
-            "The reason you don't like being alone in elevators.",
             "Why you can't remember what happened that entire day.",
             "Why you never returned to that place.",
             "What you found in the attic.",
@@ -164,7 +155,7 @@
         // Get a random memory
         function getRandomMemory() {
             // Check if we've reached the daily limit (2 per day)
-            if (dailyMemoryCount >= 500) {
+            if (dailyMemoryCount >= 2) {
                 return "You've remembered enough for today. Return tomorrow.";
             }
 
