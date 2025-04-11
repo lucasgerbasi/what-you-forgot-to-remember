@@ -10,7 +10,7 @@
     }
 
     50% {
-        transform: translateY(-8px) translateX(5px);
+        transform: translateY(-3px) translateX(2px);
     }
 
     100% {
@@ -97,6 +97,9 @@ body::after {
     width: 100%;
     height: 100%;
     background: url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.05 0' /%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     opacity: 0.15;
     z-index: -1;
     mix-blend-mode: overlay;
@@ -142,7 +145,7 @@ body::after {
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 140vh;
+    height: 120vh;
     position: relative;
     z-index: 2;
 }
@@ -231,14 +234,11 @@ h1 {
 .fade-in {
     opacity: 1;
     animation-play-state: running;
-    transition: 6s;
+    transition: opacity 6s;
 }
 
 .action-btns {
-position: absolute; /* Remove from normal flow */
-top: 100%; /* Place it below the container */
-left: 50%;
-transform: translateX(-50%);
+position: flex; /* Remove from normal flow */
 margin-top: 20px; /* Add spacing from the memory result */
 display: flex;
 flex-direction: column;
@@ -484,5 +484,107 @@ body.dark-mode::after {
     .ambient-control {
         padding: 6px 10px;
         font-size: 0.8rem;
+    }
+}
+
+/* Base breakpoint: Tablets and below */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 2.8rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .reveal-btn {
+        padding: 24px 48px;
+        font-size: 1.2rem;
+    }
+
+    .memory-result {
+        font-size: 1.5rem;
+    }
+
+    .action-btn {
+        font-size: 0.95rem;
+        padding: 10px 24px;
+    }
+
+    .archive-title {
+        font-size: 2rem;
+    }
+}
+
+/* Mobile breakpoint: Phones */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .reveal-btn {
+        font-size: 1rem;
+        padding: 20px 36px;
+    }
+
+    .memory-result {
+        font-size: 1.2rem;
+    }
+
+    .action-btns {
+        position: static;
+        transform: none;
+        align-items: center;
+    }
+
+    .action-btn {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+    }
+
+    .controls {
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .archive-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* Ultra small screens (optional) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .reveal-btn {
+        padding: 16px 28px;
+        font-size: 0.95rem;
+    }
+
+    .memory-result {
+        font-size: 1rem;
+    }
+
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 10px 20px;
     }
 }

@@ -1,8 +1,6 @@
         // Memory database
         const memories = [
-            "The letter you never sent.",
             "That Tuesday. You know the one.",
-            "Why you kept that voicemail.",
             "The dream that woke you at 3:17 AM.",
             "When the stranger called you by a different name.",
             "The face you saw in the crowd that day.",
@@ -12,7 +10,7 @@
             "How the air smelled before it happened.",
             "The secret you kept even from yourself.",
             "That song you can't remember the name of.",
-            "The reason you still check that drawer.",
+            "The reason you still check that place.",
             "The shadow in the corner of your childhood bedroom.",
             "What made you hesitate that one time.",
             "The date that means something only to you.",
@@ -34,39 +32,37 @@
             "The reason you stopped wearing that perfume.",
             "The reason you kept holding on when no one else did.",
             "What you saw in the mirror that morning.",
-            "The ache that never had a cause.",
+            "The story behind that unexplained bruise.",
+            "What you erased before anyone could see it.",
+            "Why you keep returning to the same place, hoping it’s changed.",
+            "What you refused to see the first time.",
+            "The reason you never threw it away.",
             "The ending you were too afraid to reach.",
             "What was on the other side of that door.",
             "The real reason you took that detour.",
-            "Why that old photograph still unsettles you.",
+            "Why that old photo still unsettles you.",
             "What you were afraid would happen if you stayed.",
             "The words on the note you found in your pocket.",
-            "Why you keep returning to the same place, hoping it’s changed.",
+            "Why you still check that one particular email account.",
             "What they told you when no one else was listening.",
             "The sound that woke you that night.",
             "Why you abandoned that childhood ambition.",
             "The name of the street where it all changed.",
-            "What you buried in the backyard.",
             "Why that specific cloud formation made you uneasy.",
             "What was reflected in the window that wasn't there.",
             "The taste of something you can't quite place.",
             "Why you haven't opened that box yet.",
-            "What was behind that locked door in your grandparents' house.",
             "The words to that lullaby no one else knows.",
             "Why you sometimes wake up with tears in your eyes.",
             "What you were trying to find that summer.",
-            "The reason you changed your handwriting.",
-            "Why you can't bring yourself to throw away that old sweater.",
+            "Why you can't bring yourself to throw away that old thing.",
             "What made the hair on your neck stand up that afternoon.",
             "The message hidden in that birthday card.",
             "Why you started counting the steps.",
-            "What was meant to stay hidden — but wasn’t.",
             "The question you were too afraid to ask.",
-            "Why you never wear watches anymore.",
             "What was following you home that night.",
             "The reason behind that unexplained scar.",
             "Why you stopped believing in coincidences.",
-            "What you refused to see the first time.",
             "The real purpose of that childhood ritual.",
             "Why you can't look at the stars the same way anymore.",
             "What you found when you weren't looking.",
@@ -83,20 +79,17 @@
             "Why you prefer to sit with your back to the wall.",
             "What was hidden behind the wallpaper in your childhood room.",
             "The truth about that family story no one talks about.",
-            "Why certain songs make you unexpectedly emotional.",
-            "What your reflection whispered to you.",
+            "Why that song make you unexpectedly emotional.",
+            "What you found when you weren't looking",
             "The reason you don't like being alone in elevators.",
             "Why you can't remember what happened that entire day.",
-            "What you erased before anyone could see it.",
-            "The real reason you left town so suddenly.",
-            "The note that wasn’t meant for you.",
             "Why you never returned to that place.",
-            "What you found in the attic when no one else was home.",
-            "The reason you still check that one specific voicemail.",
+            "What you found in the attic.",
+            "The reason you still listen to that one specific voicemail.",
             "Why you suddenly stopped having that recurring dream.",
             "What made you change your mind about them.",
             "The significance of that seemingly random date.",
-            "Why you still carry that particular photograph.",
+            "Why you still have that particular photo.",
             "What was written in that journal you lost.",
             "The words you couldn't bring yourself to say at the funeral.",
             "Why you sometimes still dial their number.",
@@ -104,14 +97,41 @@
             "The real meaning behind that childhood nickname.",
             "Why certain smells transport you immediately back in time.",
             "What you found when you finally looked.",
-            "The reason you stopped trusting your intuition."
+            "The reason you stopped trusting your intuition.",
+            "The time you pretended not to notice.",
+            "The name you never told anyone.",
+            "Why silence felt louder that day.",
+            "What you lost the moment you laughed.",
+            "The reason you never corrected them.",
+            "That one question you still don't want the answer to.",
+            "The first time you felt completely alone in a crowd.",
+            "Why you didn’t take that last photo.",
+            "The sound you haven’t heard since but know you'd recognize instantly.",
+            "The moment the air shifted and you couldn’t explain why.",
+            "Why that hour went missing.",
+            "The reason that year feels unfinished.",
+            "The moment you stepped into that person's timeline.",
+            "Why you keep pretending you don’t remember.",
+            "That thing you still feel guilty for — even now.",
+            "What you almost told them, but didn't.",
+            "Why you didn’t speak up when you had the chance.",
+            "The thing you knew before you were supposed to.",
+            "What you left behind without realizing it.",
+            "The moment that felt like a warning.",
+            "Why the room felt different that day.",
+            "What slipped between the cracks of that conversation.",
+            "What made you start counting, and why you never stopped.",
+            "What you read that changed everything.",
+
         ];
 
         // Rare memories (0.5% chance)
         const rareMemories = [
             "The entity that watches you sleep isn't what you think it is.",
             "You aren't the first version of yourself to live this life.",
-            "Someone knows exactly what you did."
+            "Someone knows exactly what you did.",
+            "Your childhood imaginary friend still answers when you call, but only at 3 AM.",
+            "Your reflection blinks half a second slower than you do."
         ];
 
         // DOM elements
@@ -129,6 +149,7 @@
         const archiveList = document.getElementById('archive-list');
         const backBtn = document.getElementById('back-btn');
         const ambientSound = document.getElementById('ambient-sound');
+        const chimeSound = document.getElementById('chime-sound');
 
         // State variables
         let soundEnabled = false;
@@ -174,11 +195,17 @@ function showMemory() {
     revealBtn.style.display = 'none';
     document.querySelector('.or-maybe').style.display = 'none';
 
+    if (soundEnabled) {
+        chimeSound.play();
+    }
+
     const memory = getRandomMemory();
     memoryResult.textContent = memory;
 
+    saveImageBtn.style.display = 'inline-block'; 
+
     // Shrink container height
-    document.querySelector('.container').style.height = '123.9vh';
+    document.querySelector('.container').style.height = '108.5%';
 
     // Add memory to viewed list if not daily limit message
     if (!memory.includes("You've remembered enough")) {
@@ -191,6 +218,7 @@ function showMemory() {
             localStorage.setItem('viewedMemories', JSON.stringify(viewedMemories));
         }
     }
+    
 
     // Fade in animation
     setTimeout(() => {
@@ -210,6 +238,7 @@ function resetMemory() {
     actionBtns.classList.remove('visible'); // Use the 'visible' class
     revealBtn.style.display = 'block';
     document.querySelector('.or-maybe').style.display = 'block';
+    saveImageBtn.style.display = 'none';
 }
 
         // Save as image
@@ -219,8 +248,8 @@ function resetMemory() {
             const ctx = canvas.getContext('2d');
 
             // Set canvas dimensions
-            canvas.width = 800;
-            canvas.height = 600;
+            canvas.width = 700;
+            canvas.height = 350;
 
             // Fill background
             const isDarkMode = document.body.classList.contains('dark-mode');
@@ -278,10 +307,8 @@ function resetMemory() {
             if (soundEnabled) {
                 ambientSound.volume = 0.2;
                 ambientSound.play();
-                soundIndicator.textContent = '●';
             } else {
                 ambientSound.pause();
-                soundIndicator.textContent = '◯';
             }
         }
 

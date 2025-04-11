@@ -35,7 +35,7 @@
 
         <div class="memory-result" id="memory-result"></div>
 
-        <div class="action-btns" id="action-btns" style="display: none;">
+        <div class="action-btns" id="action-btns">
             <button class="action-btn" id="try-again-btn">Try Again</button>
             <button class="action-btn" id="save-image-btn">Save as Image</button>
         </div>
@@ -53,7 +53,6 @@
         <button class="control-btn" id="dark-mode-btn">Light / Dark</button>
         <div class="ambient-control">
             <span id="sound-btn">Sound</span>
-            <span id="sound-indicator">◯</span>
         </div>
         <button class="control-btn" id="archive-btn">Archive</button>
     </div>
@@ -61,9 +60,12 @@
     <audio id="ambient-sound" loop>
         <source src="ethereal.mp3" type="audio/mp3">
     </audio>
+    <audio id="chime-sound">
+        <source src="chime.mp3" type="audio/mp3">
+    </audio>
 
     <script src="script.js"></script>
-    <a href="https://ko-fi.com/YOUR_USERNAME" target="_blank" class="kofi-button">
+    <a href="https://ko-fi.com/lugerp" target="_blank" class="kofi-button">
         <img src="https://storage.ko-fi.com/cdn/kofi5.png" alt="Buy me a coffee" style="height: 40px;">
     </a>
 </body>
