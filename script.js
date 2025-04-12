@@ -169,7 +169,6 @@
             return memories[randomIndex];
         }
 
-        // Show memory
 // Show memory
 function showMemory() {
     revealBtn.style.display = 'none';
@@ -207,7 +206,7 @@ function showMemory() {
 
     // Show action buttons
     setTimeout(() => {
-        actionBtns.classList.add('visible'); // Use the 'visible' class
+        actionBtns.classList.add('visible');
     }, 2000);
 }
 
@@ -215,7 +214,7 @@ function showMemory() {
 function resetMemory() {
     memoryResult.classList.remove('fade-in');
     memoryResult.textContent = '';
-    actionBtns.classList.remove('visible'); // Use the 'visible' class
+    actionBtns.classList.remove('visible');
     revealBtn.style.display = 'block';
     document.querySelector('.or-maybe').style.display = 'block';
     saveImageBtn.style.display = 'none';
